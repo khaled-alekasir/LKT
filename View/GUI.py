@@ -1,0 +1,12 @@
+from tkinter import  *
+window = Tk()
+window.geometry("640x400")
+window.configure(background="#6e6464")
+icon = PhotoImage(file = "welcome.png")
+label = Label(window , image = icon)
+label.pack()
+username_entry = Entry(window)
+username_entry.insert(index = 0, string = "enter your username:")
+password_entry = Entry(window, text = "enter your password:")
+username_entry.place(x = 240 , y = 250)
+window.mainloop()
