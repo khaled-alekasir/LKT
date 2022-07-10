@@ -1,5 +1,6 @@
 class Ticket:
-    def __int__(self, airline_name: str, origin: str, destination: str, seats: str, cost: int):
+    def __init__(self, flight_id: int, airline_name: str, origin: str, destination: str, seats: str, cost: int):
+        self.flight_id = flight_id
         self.airline_name = airline_name
         self.origin = origin
         self.destination = destination
@@ -9,6 +10,7 @@ class Ticket:
         self.departure_date = None
         self.arrival_time = None
         self.arrival_date = None
+        self.ticket_id = None
 
     def set_departure_info(self, departure_time: str, departure_date: str):
         self.departure_time = departure_time
@@ -35,3 +37,6 @@ class Ticket:
 
     def get_airline(self):
         return self.airline_name
+
+    def get_id(self):
+        return self.id

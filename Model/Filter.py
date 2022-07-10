@@ -20,7 +20,7 @@ class DestinationFilter(Filter):
 
 
 class PriceFilter(Filter):
-    def __int__(self, min_price:float, max_price:float):
+    def __init__(self, min_price:float, max_price:float):
         self.min_price = min_price
         self.max_price = max_price
 
