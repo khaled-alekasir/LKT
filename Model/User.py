@@ -13,6 +13,11 @@ class User:
     def add_credit(self, added_credit:float):
         self.credit += added_credit
 
+    def purchase(self, amount):
+        if self.credit < amount:
+            raise Exception("Bad Request")
+        self.credit -= amount
+
     def get_username(self):
         return self.username
 
