@@ -12,8 +12,8 @@ class Expedia:
         self.flights = list()
         self.users = list()
         self.filter = Filter()
-        with open("DataBase\\WebDatabase") as db:
-            if len(db.keys() == 0):
+        with shelve.open("DataBase\\WebDatabase") as db:
+            if len(db.keys()) == 0:
                 self.__read_csv()
             else:
                 self.__read_database()
@@ -62,6 +62,7 @@ class Expedia:
     def logout(self):
         assert self.logged_in_user != None , "Peremission denied"
         self.logged_in_user = None
+        self.filter = Filter()
 
     def add_credit(self, amount):
         assert self.logged_in_user != None, "Peremission denied"
@@ -70,14 +71,14 @@ class Expedia:
     def get_flights(self):
         assert self.logged_in_user != None, "Peremission denied"
 
-        for ticket in self.user_ticket_map[self.logged_in_user]:
-            print(ticket)
+        for flight in self.filter.filter(self.flights):
+            print(flight)
 
     def get_flight_by_id(self, id:int):
         assert self.logged_in_user != None, "Peremission denied"
 
-        for ticket in self.user_ticket_map[self.logged_in_user]:
-            if ticket[1] == id:
+        for flight in self.flights:
+            if flight.get_id() == id:
                 return self.user_ticket_map[self.logged_in_user]
         raise Exception("Empty")
 
@@ -120,3 +121,21 @@ class Expedia:
 
     def add_filter(self, filter):
         self.filter = filter
+
+    def get_connecting_flights(self, from_, to_):
+        connecting_flights = list()
+        in_between_flights = [flight for flight in self.flights if flight.get_destination() ==to_]
+        print(in_between_flights)
+        for flight1 in self.flights:
+            if flight1.get_origin() != from_:
+                continue
+            for flight2 in in_between_flights:
+                if flight1.get_destination() != flight2.get_origin():
+                    continue
+                duration = flight1.get_connection_duration_with(flight2)
+                if ((duration[0] == 15 and duration[1] ==0) or duration[0]< 14) and duration[0] >= 0:
+                    connecting_flights.append((flight1, flight2))
+        return connecting_flights
+
+    def get_cheapest_flights(self, from_, to_):
+        pass

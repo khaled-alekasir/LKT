@@ -1,5 +1,5 @@
 class Filter:
-    def __int__(self):
+    def __init__(self):
         pass
 
     def filter(self, tickets_list: list):
@@ -7,7 +7,7 @@ class Filter:
 
 
 class DestinationFilter(Filter):
-    def __int__(self, from_:str, to_: str):
+    def __init__(self, from_:str, to_: str):
         self.from_ = from_
         self.to_ = to_
 
@@ -33,7 +33,7 @@ class PriceFilter(Filter):
 
 
 class AirlineFilter(Filter):
-    def __int__(self, airline_name):
+    def __init__(self, airline_name):
         self.airline_name = airline_name
 
     def filter(self, tickets_list: list):

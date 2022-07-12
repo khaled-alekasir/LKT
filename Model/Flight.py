@@ -14,6 +14,10 @@ class Flight:
         self.sold_business_seats = 0
         self.sold_economy_seats = 0
 
+    def __repr__(self):
+        return f"{self.flight_id} {self.airline_name} {self.origin} {self.destination} {self.departure_date} {self.departure_time} " \
+               f"{self.arrival_date} {self.arrival_time}"
+
     def set_departure_info(self, departure_time: str, departure_date: str):
         self.departure_time = departure_time
         self.departure_date = departure_date
@@ -54,3 +58,12 @@ class Flight:
             if self.sold_business_seats + quantity > 0.25 * self.seats:
                 raise Exception("Bad Request")
             self.sold_business_seats += quantity
+
+    def get_connection_duration_with(self, other):
+        other_date , other_time = other.get_departure_info()
+        self_date , self_time = self.get_arrival_info()
+        hours = 24 * (int(other_date) - int(self_date)) + (int(other_time.split(":")[0]) - int(self_time.split(":")[0]))
+        minutes = int(other_time.split(":")[1]) - int(self_time.split(":")[1])
+        if minutes < 0:
+            return (hours - 1 , minutes + 60)
+        return (hours, minutes)
