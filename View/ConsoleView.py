@@ -1,4 +1,5 @@
 from Control.Expedia import Expedia
+from Model.Filter import *
 class ConsoleView:
     def __init__(self, control):
         self.control = control
@@ -42,13 +43,21 @@ class ConsoleView:
                 self.control.show_user_ticket(int(temp_command[temp_command.index("id")])+1)
 
             elif command.startswith(("DELETE tickets")):
-                self.control.cancel_ticket(temp_command[temp_command.index("id")])+1)
+                self.control.cancel_ticket(temp_command[temp_command.index("id")]+1)
 
             #filter commands
 
-            elif command.startswith("POST filters ? from"):
-                pass
+            elif command.startswith("POST filters ?") and "from" in command:
+                from_, to_ = temp_command[temp_command.index("from")+1] , temp_command[temp_command.index("to")+1]
+                self.control.add_filter(DestinationFilter(from_ , to_))
 
+            elif command.startswith("POST filters ?") and "min_price" in command:
+                min, max = temp_command[temp_command.index("min_price")+1], temp_command[temp_command.index("max_price")+1]
+                self.control.add_filter(PriceFilter(min, max))
+
+            elif command.startswith("POST filter ?") and "airline" in command:
+                airline_name = temp_command[temp_command.index("airline")+1]
+                self.control.add_filter(AirlineFilter(airline_name))
 
 
 expedia = Expedia()

@@ -1,4 +1,5 @@
 import csv
+import shelve
 import sys
 from Model.Flight import Flight
 from Model.User import User
@@ -11,7 +12,11 @@ class Expedia:
         self.flights = list()
         self.users = list()
         self.filter = Filter()
-        self.__read_csv()
+        with open("DataBase\\WebDatabase") as db:
+            if len(db.keys() == 0):
+                self.__read_csv()
+            else:
+                self.__read_database()
 
     def __str__(self):
         return f"users = {self.users} , tickets = {self.flights}"
@@ -28,6 +33,12 @@ class Expedia:
                 flight.set_arrival_info(row["arrival_time"], row["arrival_date"])
                 self.flights.append(flight)
                 id += 1
+
+    def __read_data_base(self):
+        with open("DataBase\\WebDatabase") as db:
+            self.user_ticket_map = db["tickets"]
+            self.flights = db["flights"]
+            self.users = db["users"]
 
     def __find_flight_by_id(self, id):
         for flight in self.flights:
@@ -107,3 +118,5 @@ class Expedia:
                     return
         raise Exception("Bad Request")
 
+    def add_filter(self, filter):
+        self.filter = filter
