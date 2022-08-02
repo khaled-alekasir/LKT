@@ -10,13 +10,21 @@ class User:
     def __repr__(self):
         return  self.username + "   " + self.password
 
+    def __hash__(self):
+        return hash(f"{self.username}{self.password}")
+
+    def __eq__(self, other):
+        if not isinstance(other , User):
+            return False
+        return self.username == other.username and self.password == other.password
+
     def add_credit(self, added_credit:float):
-        self.credit += added_credit
+        self.credit = float(self.credit) + float(added_credit)
 
     def purchase(self, amount):
-        if self.credit < amount:
+        if float(self.credit) < float(amount):
             raise Exception("Bad Request")
-        self.credit -= amount
+        self.credit = float(self.credit) - float(amount)
 
     def get_username(self):
         return self.username

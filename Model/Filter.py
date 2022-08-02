@@ -27,7 +27,7 @@ class PriceFilter(Filter):
     def filter(self, ticket_list:list):
         new_list = list()
         for ticket in ticket_list:
-            if ticket.get_cost() <= self.max_price and ticket.get_cost >= self.min_price:
+            if float(ticket.get_cost()) <= self.max_price and float(ticket.get_cost()) >= self.min_price:
                 new_list.append(ticket)
         return new_list
 
